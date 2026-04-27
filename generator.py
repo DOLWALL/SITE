@@ -10,7 +10,7 @@ from aiogram.types import BufferedInputFile
 
 # --- 1. НАСТРОЙКИ СИСТЕМЫ И БЕЗОПАСНОСТИ ---
 # ВПИШИ СЮДА ТОКЕН БОТА-ГЕНЕРАТОРА
-GENERATOR_TOKEN = "8503933078:AAHXl8Y9dPKP6l3_iAQe7PhxNNVz6D21fTE"
+GENERATOR_TOKEN = "8577015225:AAFbVE3hZ23HZI50gWk7d7vdgqi5rKHcJ4A"
 AUTHORIZED_ADMIN_ID = 7316276135
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
