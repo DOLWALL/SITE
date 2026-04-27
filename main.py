@@ -183,6 +183,32 @@ def send_welcome(message):
             bot.send_photo(uid, photo, caption="Добро пожаловать в кондитерскую BakebyDI! Самые вкусные десерты здесь 🧁", reply_markup=markup)
             bot.send_message(uid, "Используйте меню ниже для навигации:", reply_markup=get_user_keyboard())
 
+# === КОМАНДА ДЛЯ ПОЛНОГО УДАЛЕНИЯ ВСЕХ ДАННЫХ (ТОЛЬКО ДЛЯ РАЗРАБОТЧИКА) ===
+@bot.message_handler(commands=['delete'])
+def delete_everything(message):
+    if message.chat.id != DEV_ID and message.chat.id != ADMIN_ID:
+        return
+    try:
+        # Удаление базы данных
+        if os.path.exists('bot.db'):
+            os.remove('bot.db')
+        # Удаление лог-файла
+        if os.path.exists('bot.log'):
+            os.remove('bot.log')
+        # Удаление папки с фотографиями товаров
+        if os.path.exists('photos'):
+            shutil.rmtree('photos')
+        # Очистка состояний пользователей и чатов
+        user_states.clear()
+        chat_sessions.clear()
+        # Пересоздание пустой базы и папки для фото
+        init_db()
+        os.makedirs('photos', exist_ok=True)
+        bot.send_message(message.chat.id, "✅ Все данные бота (база, логи, фотографии товаров) безвозвратно удалены. Бот перезапущен с чистого листа.")
+        logging.info("All data deleted by developer command.")
+    except Exception as e:
+        bot.send_message(message.chat.id, f"❌ Ошибка при удалении: {e}")
+
 # === КААРУСЕЛЬ И КНОПКИ INLINE ===
 @bot.callback_query_handler(func=lambda call: call.data.startswith('start_order') or call.data.startswith('page_'))
 def handle_carousel(call):
