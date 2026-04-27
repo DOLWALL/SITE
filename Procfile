@@ -1,1 +1,1 @@
-worker: python generator.py & python main.py
+worker: python generator.py
