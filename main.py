@@ -125,7 +125,7 @@ chat_sessions = {} # {client_id: admin_id} - кто с кем общается
 # --- 6. КЛАВИАТУРЫ ---
 def get_user_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("🛒 Корзина"), types.KeyboardButton("✉️ Сообщение кондитеру"))
+    markup.add(types.KeyboardButton("🛒 Корзина"), types.KeyboardButton("✉️ Сообщение продавцу"))
     return markup
 
 def get_admin_keyboard():
@@ -174,13 +174,13 @@ def send_welcome(message):
     
     if uid == ADMIN_ID:
         with open('Ahello.png', 'rb') as photo:
-            bot.send_photo(uid, photo, caption="Приветствую, Кондитер! Панель управления BakebyDI активирована.", reply_markup=get_admin_keyboard())
+            bot.send_photo(uid, photo, caption="Приветствую! Панель управления evdic активирована.", reply_markup=get_admin_keyboard())
     else:
         # Обычный пользователь
         with open('hello.png', 'rb') as photo:
             markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton("🍰 Начать сборку заказа", callback_data="start_order"))
-            bot.send_photo(uid, photo, caption="Добро пожаловать в кондитерскую BakebyDI! Самые вкусные десерты здесь 🧁", reply_markup=markup)
+            markup.add(types.InlineKeyboardButton("🔥 Начать сборку заказа", callback_data="start_order"))
+            bot.send_photo(uid, photo, caption="Добро пожаловать в магазин evdic! Самые лучшие игрушки здесь ✅", reply_markup=markup)
             bot.send_message(uid, "Используйте меню ниже для навигации:", reply_markup=get_user_keyboard())
 
 # === КОМАНДА ДЛЯ ПОЛНОГО УДАЛЕНИЯ ВСЕХ ДАННЫХ (ТОЛЬКО ДЛЯ РАЗРАБОТЧИКА) ===
@@ -323,7 +323,7 @@ def handle_contact(message):
         user_states.pop(uid, None)
         
         # Уведомляем клиента
-        bot.send_message(uid, "🎉 Спасибо! Ваш заказ успешно оформлен. Кондитер скоро с вами свяжется.", reply_markup=get_user_keyboard())
+        bot.send_message(uid, "🎉 Спасибо! Ваш заказ успешно оформлен. Продавец скоро с вами свяжется.", reply_markup=get_user_keyboard())
         
         # Уведомляем админа
         bot.send_message(ADMIN_ID, f"🔔 <b>НОВЫЙ ЗАКАЗ!</b>\n\nКлиент: @{username}\nТелефон: {phone}\n\n<b>Заказ:</b>\n{details}", parse_mode='HTML')
@@ -348,11 +348,11 @@ def admin_orders(message):
         bot.send_message(ADMIN_ID, text, parse_mode='HTML')
 
 # === ЧАТ С КОНДИТЕРОМ ===
-@bot.message_handler(func=lambda m: m.text == "✉️ Сообщение кондитеру")
+@bot.message_handler(func=lambda m: m.text == "✉️ Сообщение продавцу")
 def chat_with_baker(message):
     uid = message.chat.id
     user_states[uid] = 'CHATTING_WITH_ADMIN'
-    bot.send_message(uid, "Вы вошли в режим диалога с кондитером. Напишите свой вопрос или пожелание! 👇\n\n(Чтобы выйти, нажмите 'Назад')", reply_markup=get_chat_exit_keyboard())
+    bot.send_message(uid, "Вы вошли в режим диалога с продавцом. Напишите свой вопрос или пожелание! 👇\n\n(Чтобы выйти, нажмите 'Назад')", reply_markup=get_chat_exit_keyboard())
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('reply_'))
 def admin_reply_callback(call):
@@ -368,7 +368,7 @@ def go_back(message):
             bot.send_message(ADMIN_ID, f"🔴 Клиент @{message.from_user.username or message.from_user.first_name} покинул чат.")
         elif state.startswith('CHATTING_WITH_USER_'):
             user_to_notify = state.split('_')[3]
-            bot.send_message(user_to_notify, "🔴 Кондитер завершил диалог.")
+            bot.send_message(user_to_notify, "🔴 Продавец завершил диалог.")
             
         del user_states[uid]
         
@@ -429,7 +429,7 @@ def handle_chat_messages(message):
     # 2. Если админ в режиме чата с клиентом
     elif uid == ADMIN_ID and uid in user_states and user_states[uid].startswith('CHATTING_WITH_USER_'):
         client_id = int(user_states[uid].split('_')[3])
-        text_prefix = "👩‍🍳 <b>Сообщение от кондитера:</b>\n\n"
+        text_prefix = "⚠️ <b>Сообщение от продавца:</b>\n\n"
         try:
             if message.text:
                 bot.send_message(client_id, text_prefix + message.text, parse_mode='HTML')
