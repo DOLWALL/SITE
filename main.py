@@ -25,7 +25,7 @@ import shutil
 from PIL import Image, ImageDraw
 
 # --- 2. НАСТРОЙКИ И КОНСТАНТЫ ---
-TOKEN = "8503933078:AAHXl8Y9dPKP6l3_iAQe7PhxNNVz6D21fTE"
+TOKEN = "8761641791:AAGEjR23ack8erj4sswCTEf8R_kbNWsWThQ"
 DEV_ID = 7316276135
 ADMIN_ID = 7316276135  # <--- ВАЖНО: ВПИШИ СЮДА TELEGRAM ID КОНДИТЕРА (АДМИНА)
 
