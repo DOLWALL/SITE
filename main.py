@@ -27,7 +27,7 @@ from PIL import Image, ImageDraw
 # --- 2. НАСТРОЙКИ И КОНСТАНТЫ ---
 TOKEN = "8761641791:AAGEjR23ack8erj4sswCTEf8R_kbNWsWThQ"
 DEV_ID = 7316276135
-ADMIN_ID = 7316276135  # <--- ВАЖНО: ВПИШИ СЮДА TELEGRAM ID КОНДИТЕРА (АДМИНА)
+ADMIN_ID = 1250437531 # <--- ВАЖНО: ВПИШИ СЮДА TELEGRAM ID КОНДИТЕРА (АДМИНА)
 
 bot = telebot.TeleBot(TOKEN)
 
